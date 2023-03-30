@@ -1,2 +1,1 @@
 # groot-server
-jenkins test
