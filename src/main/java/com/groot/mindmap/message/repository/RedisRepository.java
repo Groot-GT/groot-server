@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public class RedisRepository {
 
-    private static final String PAGE = "PAGE";
     private static final String USER_LIST = "USER_LIST";
     private static final String ENTER_INFO = "ENTER_INFO";
 
@@ -30,6 +29,23 @@ public class RedisRepository {
     }
 
     /**
+     * 유저의 입장 정보를 Redis에서 삭제하는 메서드
+     * @param sessionId 유저의 세션 ID
+     */
+    public void removeEnterInfo(String sessionId) {
+        enterInfos.delete(ENTER_INFO, sessionId);
+    }
+
+    /**
+     * 유저 세션으로 입장해 있는 채팅방 ID 조회하는 메서드
+     * @param sessionId 유저의 세션 ID
+     * @return Page ID
+     */
+    public String getEnteredPageId(String sessionId) {
+        return enterInfos.get(ENTER_INFO, sessionId);
+    }
+
+    /**
      * 현재 입장해 있는 유저 리스트에 새로운 유저를 추가하는 메서드
      * @param pageId Page ID
      * @param name 유저의 이름(또는 ID)
@@ -45,5 +61,9 @@ public class RedisRepository {
      */
     public List<String> getUsers(String pageId) {
         return userLists.range(USER_LIST + "_" + pageId, 0, -1);
+    }
+
+    public void removeUser(String pageId, String name) {
+        userLists.remove(USER_LIST + "_" + pageId, 1, name);
     }
 }
