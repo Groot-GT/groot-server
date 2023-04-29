@@ -1,6 +1,6 @@
 package com.groot.mindmap.config;
 
-import com.groot.mindmap.util.RedisSubscriber;
+import com.groot.mindmap.util.MessagePublisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,8 +45,8 @@ public class RedisConfiguration {
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
-        return new MessageListenerAdapter(subscriber, "sendMessage");
+    public MessageListenerAdapter listenerAdapter(MessagePublisher publisher) {
+        return new MessageListenerAdapter(publisher, "sendMessage");
     }
 
     @Bean
