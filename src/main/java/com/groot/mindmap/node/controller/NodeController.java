@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +35,11 @@ public class NodeController {
     public ResponseEntity<NodeResponse> findNode(@PathVariable Long id) {
         final NodeResponse nodeResponse = nodeService.findNode(id);
         return ResponseEntity.ok(nodeResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateNode(@PathVariable Long id, @RequestBody final NodeRequest nodeRequest) {
+        nodeService.update(id, nodeRequest);
+        return ResponseEntity.ok().build();
     }
 }

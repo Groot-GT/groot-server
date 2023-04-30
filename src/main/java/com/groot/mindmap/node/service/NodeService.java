@@ -29,7 +29,24 @@ public class NodeService {
     }
 
     public NodeResponse findNode(final Long id) {
-        final Node node = nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
+        final Node node = findNodeObject(id);
         return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
+    }
+
+    @Transactional
+    public void update(final Long id, final NodeRequest nodeRequest) {
+        findNodeObject(id);
+        final Node node = Node.builder()
+                .id(id)
+                .title(nodeRequest.title())
+                .content(nodeRequest.content())
+                .color(nodeRequest.color())
+                .parentId(nodeRequest.parentId())
+                .build();
+        nodeRepository.save(node);
+    }
+
+    private Node findNodeObject(final Long id) {
+        return nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
     }
 }
