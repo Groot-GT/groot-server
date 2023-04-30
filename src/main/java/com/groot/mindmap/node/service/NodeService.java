@@ -2,7 +2,9 @@ package com.groot.mindmap.node.service;
 
 import com.groot.mindmap.node.domain.Node;
 import com.groot.mindmap.node.dto.NodeRequest;
+import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.repository.NodeRepository;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,5 +26,10 @@ public class NodeService {
                 .parentId(nodeRequest.parentId())
                 .build();
         return nodeRepository.save(node).getId();
+    }
+
+    public NodeResponse findNode(final Long id) {
+        final Node node = nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
+        return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
     }
 }
