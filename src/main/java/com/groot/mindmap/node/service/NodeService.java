@@ -16,13 +16,13 @@ public class NodeService {
     }
 
     @Transactional
-    public void save(final NodeRequest nodeRequest) {
+    public Long save(final NodeRequest nodeRequest) {
         final Node node = Node.builder()
                 .title(nodeRequest.title())
                 .content(nodeRequest.content())
                 .color(nodeRequest.color())
                 .parentId(nodeRequest.parentId())
                 .build();
-        nodeRepository.save(node);
+        return nodeRepository.save(node).getId();
     }
 }
