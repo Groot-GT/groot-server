@@ -3,6 +3,7 @@ package com.groot.mindmap.node.controller;
 import com.groot.mindmap.node.dto.NodeRequest;
 import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.service.NodeService;
+import jakarta.validation.Valid;
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,9 +25,8 @@ public class NodeController {
         this.nodeService = nodeService;
     }
 
-    // TODO: @Valid 검증
     @PostMapping()
-    public ResponseEntity<Void> createNode(@RequestBody final NodeRequest nodeRequest) {
+    public ResponseEntity<Void> createNode(@Valid @RequestBody final NodeRequest nodeRequest) {
         final Long id = nodeService.save(nodeRequest);
         return ResponseEntity.created(URI.create("/api/nodes/" + id)).build();
     }
@@ -39,7 +39,7 @@ public class NodeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateNode(@PathVariable Long id, @RequestBody final NodeRequest nodeRequest) {
+    public ResponseEntity<Void> updateNode(@PathVariable Long id, @Valid @RequestBody final NodeRequest nodeRequest) {
         nodeService.update(id, nodeRequest);
         return ResponseEntity.ok().build();
     }
