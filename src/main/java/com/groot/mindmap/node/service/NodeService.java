@@ -49,4 +49,9 @@ public class NodeService {
     private Node findNodeObject(final Long id) {
         return nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
     }
+
+    public void delete(final Long id) {
+        findNodeObject(id);
+        nodeRepository.deleteById(id);
+    }
 }

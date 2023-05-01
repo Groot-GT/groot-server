@@ -5,6 +5,7 @@ import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.service.NodeService;
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +42,11 @@ public class NodeController {
     public ResponseEntity<Void> updateNode(@PathVariable Long id, @RequestBody final NodeRequest nodeRequest) {
         nodeService.update(id, nodeRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNode(@PathVariable Long id) {
+        nodeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
