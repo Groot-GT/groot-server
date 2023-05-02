@@ -18,7 +18,7 @@ public class NodeService {
     }
 
     @Transactional
-    public Long save(final NodeRequest nodeRequest) {
+    public Long saveNode(final NodeRequest nodeRequest) {
         final Node node = Node.builder()
                 .title(nodeRequest.title())
                 .content(nodeRequest.content())
@@ -28,13 +28,14 @@ public class NodeService {
         return nodeRepository.save(node).getId();
     }
 
+    @Transactional(readOnly = true)
     public NodeResponse findNode(final Long id) {
         final Node node = findNodeObject(id);
         return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
     }
 
     @Transactional
-    public void update(final Long id, final NodeRequest nodeRequest) {
+    public void updateNode(final Long id, final NodeRequest nodeRequest) {
         findNodeObject(id);
         final Node node = Node.builder()
                 .id(id)
@@ -50,7 +51,8 @@ public class NodeService {
         return nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
     }
 
-    public void delete(final Long id) {
+    @Transactional
+    public void deleteNode(final Long id) {
         findNodeObject(id);
         nodeRepository.deleteById(id);
     }

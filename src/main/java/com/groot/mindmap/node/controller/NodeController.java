@@ -25,7 +25,7 @@ public class NodeController {
 
     @PostMapping()
     public ResponseEntity<Void> createNode(@Valid @RequestBody final NodeRequest nodeRequest) {
-        final Long id = nodeService.save(nodeRequest);
+        final Long id = nodeService.saveNode(nodeRequest);
         return ResponseEntity.created(URI.create("/api/nodes/" + id)).build();
     }
 
@@ -38,13 +38,13 @@ public class NodeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateNode(@PathVariable Long id, @Valid @RequestBody final NodeRequest nodeRequest) {
-        nodeService.update(id, nodeRequest);
+        nodeService.updateNode(id, nodeRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNode(@PathVariable Long id) {
-        nodeService.delete(id);
+        nodeService.deleteNode(id);
         return ResponseEntity.noContent().build();
     }
 }
