@@ -5,6 +5,7 @@ import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.service.NodeService;
 import jakarta.validation.Valid;
 import java.net.URI;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/nodes")
 public class NodeController {
 
     private final NodeService nodeService;
-
-    public NodeController(final NodeService nodeService) {
-        this.nodeService = nodeService;
-    }
 
     @PostMapping()
     public ResponseEntity<Void> createNode(@Valid @RequestBody final NodeRequest nodeRequest) {
