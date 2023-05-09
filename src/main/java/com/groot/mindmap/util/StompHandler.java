@@ -35,7 +35,7 @@ public class StompHandler implements ChannelInterceptor {
             case SUBSCRIBE -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 String destination = Objects.requireNonNull(message.getHeaders().get("simpDestination")).toString();
-                String pageId = service.getPageId(destination);
+                String pageId = getPageId(destination);
 
                 // 유저의 접속 정보를 저장하고 현재 접속 중인 유저 리스트에 새로운 유저를 추가
                 repository.setEnterInfo(sessionId, pageId);
@@ -63,5 +63,15 @@ public class StompHandler implements ChannelInterceptor {
         }
 
         return message;
+    }
+
+    /**
+     * 목적지 정보에서 Page ID를 추출하는 메서드
+     * @param destination 헤더에 포함된 destination(Page ID를 포함하고 있음)
+     * @return Page ID
+     */
+    private String getPageId(String destination) {
+        int lastIndex = destination.lastIndexOf("/");
+        return lastIndex == -1 ? "" : destination.substring(lastIndex + 1);
     }
 }
