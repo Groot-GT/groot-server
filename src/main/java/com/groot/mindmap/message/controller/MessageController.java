@@ -17,4 +17,10 @@ public class MessageController {
     public void nodeAdd(String message) {
         redisService.sendMessage(messageService.create(message));
     }
+
+    @MessageMapping("/page/delete")
+    public void nodeDelete(String message) {
+        redisService.sendMessage(messageService.delete(message));
+    }
+
 }
