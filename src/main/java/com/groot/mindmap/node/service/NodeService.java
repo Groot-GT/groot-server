@@ -7,6 +7,7 @@ import com.groot.mindmap.node.repository.NodeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -33,6 +34,12 @@ public class NodeService {
     public NodeResponse detail(final Long id) {
         final Node node = findNodeObject(id);
         return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Node> list() {
+        // TODO pageID 를 통해 리스트를 받도록 변경
+        return nodeRepository.findAll();
     }
 
     @Transactional
