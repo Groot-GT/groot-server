@@ -1,7 +1,6 @@
 package com.groot.mindmap.util;
 
-import com.groot.mindmap.message.domain.EntryMessage;
-import com.groot.mindmap.message.domain.ExitMessage;
+import com.groot.mindmap.message.domain.UserListMessage;
 import com.groot.mindmap.message.repository.RedisRepository;
 import com.groot.mindmap.message.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +42,7 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
-                service.sendMessage(EntryMessage.create(pageId, users));
+                service.sendMessage(UserListMessage.create(pageId, "ENTRY", users));
             }
             case DISCONNECT -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
@@ -58,10 +57,9 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
-                service.sendMessage(ExitMessage.create(pageId, users));
+                service.sendMessage(UserListMessage.create(pageId, "EXIT", users));
             }
         }
-
         return message;
     }
 

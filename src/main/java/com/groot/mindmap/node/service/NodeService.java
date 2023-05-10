@@ -4,9 +4,11 @@ import com.groot.mindmap.node.domain.Node;
 import com.groot.mindmap.node.dto.NodeRequest;
 import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.repository.NodeRepository;
-import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class NodeService {
@@ -18,7 +20,7 @@ public class NodeService {
     }
 
     @Transactional
-    public Long saveNode(final NodeRequest nodeRequest) {
+    public Long create(final NodeRequest nodeRequest) {
         final Node node = Node.builder()
                 .title(nodeRequest.title())
                 .content(nodeRequest.content())
@@ -29,13 +31,19 @@ public class NodeService {
     }
 
     @Transactional(readOnly = true)
-    public NodeResponse findNode(final Long id) {
+    public NodeResponse detail(final Long id) {
         final Node node = findNodeObject(id);
         return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
     }
 
+    @Transactional(readOnly = true)
+    public List<Node> list() {
+        // TODO pageID 를 통해 리스트를 받도록 변경
+        return nodeRepository.findAll();
+    }
+
     @Transactional
-    public void updateNode(final Long id, final NodeRequest nodeRequest) {
+    public void update(final Long id, final NodeRequest nodeRequest) {
         findNodeObject(id);
         final Node node = Node.builder()
                 .id(id)
@@ -52,7 +60,7 @@ public class NodeService {
     }
 
     @Transactional
-    public void deleteNode(final Long id) {
+    public void delete(final Long id) {
         findNodeObject(id);
         nodeRepository.deleteById(id);
     }

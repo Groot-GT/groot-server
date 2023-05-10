@@ -25,26 +25,26 @@ public class NodeController {
 
     @PostMapping()
     public ResponseEntity<Void> createNode(@Valid @RequestBody final NodeRequest nodeRequest) {
-        final Long id = nodeService.saveNode(nodeRequest);
+        final Long id = nodeService.create(nodeRequest);
         return ResponseEntity.created(URI.create("/api/nodes/" + id)).build();
     }
 
     // TODO: findNodesByPage 구현
     @GetMapping("/{id}")
     public ResponseEntity<NodeResponse> findNode(@PathVariable Long id) {
-        final NodeResponse nodeResponse = nodeService.findNode(id);
+        final NodeResponse nodeResponse = nodeService.detail(id);
         return ResponseEntity.ok(nodeResponse);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateNode(@PathVariable Long id, @Valid @RequestBody final NodeRequest nodeRequest) {
-        nodeService.updateNode(id, nodeRequest);
+        nodeService.update(id, nodeRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNode(@PathVariable Long id) {
-        nodeService.deleteNode(id);
+        nodeService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
