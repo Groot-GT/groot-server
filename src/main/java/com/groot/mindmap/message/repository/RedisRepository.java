@@ -3,11 +3,11 @@ package com.groot.mindmap.message.repository;
 import jakarta.annotation.Resource;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
+@Repository
 public class RedisRepository {
 
     private static final String USER_LIST = "USER_LIST";
