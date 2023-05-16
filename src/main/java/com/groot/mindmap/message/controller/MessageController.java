@@ -13,12 +13,12 @@ public class MessageController {
     private final MessageService messageService;
     private final RedisService redisService;
 
-    @MessageMapping("/page/add")
+    @MessageMapping("/node/add")
     public void nodeAdd(String message) {
         redisService.sendMessage(messageService.create(message));
     }
 
-    @MessageMapping("/page/delete")
+    @MessageMapping("/node/delete")
     public void nodeDelete(String message) {
         redisService.sendMessage(messageService.delete(message));
     }

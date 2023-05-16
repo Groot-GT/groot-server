@@ -34,7 +34,7 @@ public class StompHandler implements ChannelInterceptor {
             case SUBSCRIBE -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 String destination = Objects.requireNonNull(message.getHeaders().get("simpDestination")).toString();
-                String pageId = getPageId(destination);
+                Long pageId = getPageId(destination);
 
                 // 유저의 접속 정보를 저장하고 현재 접속 중인 유저 리스트에 새로운 유저를 추가
                 repository.setEnterInfo(sessionId, pageId);
@@ -42,14 +42,15 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
-                service.sendMessage(UserListMessage.create(pageId, "ENTRY", users));
+
+                service.sendMessage(new UserListMessage(pageId, "ENTRY", users));
             }
             case DISCONNECT -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
-                String pageId = repository.getEnteredPageId(sessionId);
+                Long pageId = repository.getEnteredPageId(sessionId);
                 String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser"))
                         .map(Principal::getName)
-                        .orElseThrow();
+                        .orElse("NO_NAME");
 
                 // 유저의 접속 정보를 삭제하고 현재 접속 중인 유저 리스트에서 유저를 제거
                 repository.removeUser(pageId, name);
@@ -57,7 +58,7 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
-                service.sendMessage(UserListMessage.create(pageId, "EXIT", users));
+                service.sendMessage(new UserListMessage(pageId, "EXIT", users));
             }
         }
         return message;
@@ -68,8 +69,8 @@ public class StompHandler implements ChannelInterceptor {
      * @param destination 헤더에 포함된 destination(Page ID를 포함하고 있음)
      * @return Page ID
      */
-    private String getPageId(String destination) {
+    private Long getPageId(String destination) {
         int lastIndex = destination.lastIndexOf("/");
-        return lastIndex == -1 ? "" : destination.substring(lastIndex + 1);
+        return Long.valueOf(lastIndex == -1 ? "" : destination.substring(lastIndex + 1));
     }
 }
