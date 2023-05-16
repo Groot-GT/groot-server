@@ -6,12 +6,12 @@ public class UserListMessage extends Message{
 
     private final List<String> users;
 
-    private UserListMessage(String pageId, String type, List<String> users) {
+    private UserListMessage(Long pageId, String type, List<String> users) {
         super(pageId, type);
         this.users = users;
     }
 
-    public static UserListMessage create(String pageId, String type, List<String> users) {
+    public static UserListMessage create(Long pageId, String type, List<String> users) {
         // TODO validate 로직 추가
         return new UserListMessage(pageId, type, users);
     }

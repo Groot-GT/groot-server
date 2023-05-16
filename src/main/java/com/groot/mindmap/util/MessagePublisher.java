@@ -24,7 +24,7 @@ public class MessagePublisher {
         operations.convertAndSend("/sub/page/" + getPageId(message), message);
     }
 
-    private String getPageId(String message) {
+    private Long getPageId(String message) {
         try {
             return mapper.readValue(message, Message.class).pageId();
         } catch (JsonProcessingException e) {

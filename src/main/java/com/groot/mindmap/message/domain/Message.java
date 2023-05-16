@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class Message {
-    private final String pageId;
+    private final Long pageId;
     private final String type;
 
-    public String pageId() {
+    public Long pageId() {
         return pageId;
     }
 }

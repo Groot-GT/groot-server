@@ -4,7 +4,7 @@ public class DeleteMessage extends Message{
 
     private final Long nodeId;
 
-    public DeleteMessage(String pageId, String type, Long nodeId) {
+    public DeleteMessage(Long pageId, String type, Long nodeId) {
         super(pageId, type);
         this.nodeId = nodeId;
     }

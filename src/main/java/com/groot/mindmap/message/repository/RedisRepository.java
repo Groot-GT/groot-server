@@ -14,7 +14,7 @@ public class RedisRepository {
     private static final String ENTER_INFO = "ENTER_INFO";
 
     @Resource(name = "redisTemplate")
-    private HashOperations<String, String, String> enterInfos;
+    private HashOperations<String, String, Long> enterInfos;
 
     @Resource(name = "redisTemplate")
     private ListOperations<String, String> userLists;
@@ -24,7 +24,7 @@ public class RedisRepository {
      * @param sessionId 유저의 세션 ID
      * @param pageId 페이지의 ID
      */
-    public void setEnterInfo(String sessionId, String pageId) {
+    public void setEnterInfo(String sessionId, Long pageId) {
         enterInfos.put(ENTER_INFO, sessionId, pageId);
     }
 
@@ -41,7 +41,7 @@ public class RedisRepository {
      * @param sessionId 유저의 세션 ID
      * @return Page ID
      */
-    public String getEnteredPageId(String sessionId) {
+    public Long getEnteredPageId(String sessionId) {
         return enterInfos.get(ENTER_INFO, sessionId);
     }
 
@@ -50,7 +50,7 @@ public class RedisRepository {
      * @param pageId Page ID
      * @param name 유저의 이름(또는 ID)
      */
-    public void addUser(String pageId, String name) {
+    public void addUser(Long pageId, String name) {
         userLists.leftPush(USER_LIST + "_" + pageId, name);
     }
 
@@ -59,11 +59,11 @@ public class RedisRepository {
      * @param pageId Page ID
      * @return names 유저들의 이름 리스트(또는 유저 ID 리스트)
      */
-    public List<String> getUsers(String pageId) {
+    public List<String> getUsers(Long pageId) {
         return userLists.range(USER_LIST + "_" + pageId, 0, -1);
     }
 
-    public void removeUser(String pageId, String name) {
+    public void removeUser(Long pageId, String name) {
         userLists.remove(USER_LIST + "_" + pageId, 1, name);
     }
 }
