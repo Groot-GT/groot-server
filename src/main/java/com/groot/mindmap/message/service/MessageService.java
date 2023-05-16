@@ -26,7 +26,7 @@ public class MessageService {
             AddMessage addMessage = mapper.readValue(message, AddMessage.class);
             NodeRequest request = new NodeRequest("제목 없음", "내용 없음", "black", addMessage.parentId());
             nodeService.create(request);
-            return NodeListMessage.create(addMessage, nodeService.list());
+            return new NodeListMessage(addMessage, nodeService.list());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class MessageService {
         try {
             DeleteMessage deleteMessage = mapper.readValue(message, DeleteMessage.class);
             nodeService.delete(deleteMessage.nodeId());
-            return NodeListMessage.create(deleteMessage, nodeService.list());
+            return new NodeListMessage(deleteMessage, nodeService.list());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

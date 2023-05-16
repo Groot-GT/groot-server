@@ -43,7 +43,7 @@ public class StompHandler implements ChannelInterceptor {
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
 
-                service.sendMessage(UserListMessage.create(pageId, "ENTRY", users));
+                service.sendMessage(new UserListMessage(pageId, "ENTRY", users));
             }
             case DISCONNECT -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
@@ -58,7 +58,7 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
-                service.sendMessage(UserListMessage.create(pageId, "EXIT", users));
+                service.sendMessage(new UserListMessage(pageId, "EXIT", users));
             }
         }
         return message;

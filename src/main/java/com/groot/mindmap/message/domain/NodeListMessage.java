@@ -10,13 +10,8 @@ public class NodeListMessage extends Message {
 
     private final List<Node> nodes;
 
-    private NodeListMessage(Long pageId, String type, List<Node> nodes) {
-        super(pageId, type);
+    public NodeListMessage(Message message, List<Node> nodes) {
+        super(message.getPageId(), message.getType());
         this.nodes = nodes;
-    }
-
-    public static NodeListMessage create(Message message, List<Node> nodes) {
-        // TODO validate 로직 추가
-        return new NodeListMessage(message.getPageId(), message.getType(), nodes);
     }
 }
