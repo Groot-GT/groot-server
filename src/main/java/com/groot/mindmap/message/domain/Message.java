@@ -1,13 +1,22 @@
 package com.groot.mindmap.message.domain;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
-@RequiredArgsConstructor
+@Getter
 public abstract class Message {
+
+    @JsonProperty("pageId")
     private final Long pageId;
+
+    @JsonProperty("type")
     private final String type;
 
-    public Long pageId() {
-        return pageId;
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Message(@JsonProperty("pageId") Long pageId,
+                   @JsonProperty("type") String type) {
+        this.pageId = pageId;
+        this.type = type;
     }
 }

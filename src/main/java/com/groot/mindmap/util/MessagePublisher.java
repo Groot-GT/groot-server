@@ -1,10 +1,10 @@
 package com.groot.mindmap.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groot.mindmap.message.domain.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,9 @@ public class MessagePublisher {
 
     private Long getPageId(String message) {
         try {
-            return mapper.readValue(message, Message.class).pageId();
-        } catch (JsonProcessingException e) {
+            JSONParser parser = new JSONParser(message);
+            return Long.valueOf(parser.object().get("pageId").toString());
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }

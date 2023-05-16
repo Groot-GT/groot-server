@@ -1,9 +1,11 @@
 package com.groot.mindmap.message.domain;
 
 import com.groot.mindmap.node.domain.Node;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class NodeListMessage extends Message {
 
     private final List<Node> nodes;
@@ -13,8 +15,8 @@ public class NodeListMessage extends Message {
         this.nodes = nodes;
     }
 
-    public static NodeListMessage create(Long pageId, String type, List<Node> nodes) {
+    public static NodeListMessage create(Message message, List<Node> nodes) {
         // TODO validate 로직 추가
-        return new NodeListMessage(pageId, type, nodes);
+        return new NodeListMessage(message.getPageId(), message.getType(), nodes);
     }
 }

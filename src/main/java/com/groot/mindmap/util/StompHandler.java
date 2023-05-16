@@ -42,6 +42,7 @@ public class StompHandler implements ChannelInterceptor {
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
+
                 service.sendMessage(UserListMessage.create(pageId, "ENTRY", users));
             }
             case DISCONNECT -> {
@@ -49,7 +50,7 @@ public class StompHandler implements ChannelInterceptor {
                 Long pageId = repository.getEnteredPageId(sessionId);
                 String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser"))
                         .map(Principal::getName)
-                        .orElseThrow();
+                        .orElse("NO_NAME");
 
                 // 유저의 접속 정보를 삭제하고 현재 접속 중인 유저 리스트에서 유저를 제거
                 repository.removeUser(pageId, name);
