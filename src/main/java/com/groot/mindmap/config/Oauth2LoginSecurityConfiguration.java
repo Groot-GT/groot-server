@@ -2,7 +2,9 @@ package com.groot.mindmap.config;
 
 import com.groot.mindmap.user.domain.AuthInformation;
 import com.groot.mindmap.user.domain.AuthInformationFactory;
-import lombok.extern.slf4j.Slf4j;
+import com.groot.mindmap.user.domain.User;
+import com.groot.mindmap.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,10 +21,14 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.util.Assert;
 
-@Slf4j
+import java.util.Optional;
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class Oauth2LoginSecurityConfiguration {
+
+    private final UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,13 +36,13 @@ public class Oauth2LoginSecurityConfiguration {
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/oauth2/authorization")
-                .authorizationRequestRepository(authorizationRequestRepository()))
-                .redirectionEndpoint(redirection -> redirection
-                        .baseUri("/*/oauth2/code/*"))
-                .userInfoEndpoint(userInfo -> userInfo
-                        .userService(new DefaultOAuth2UserService()))
-                .successHandler(oAuth2AuthenticationSuccessHandler())
-                .failureHandler(oAuth2AuthenticationFailureHandler()))
+                                .authorizationRequestRepository(authorizationRequestRepository()))
+                        .redirectionEndpoint(redirection -> redirection
+                                .baseUri("/*/oauth2/code/*"))
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(new DefaultOAuth2UserService()))
+                        .successHandler(oAuth2AuthenticationSuccessHandler())
+                        .failureHandler(oAuth2AuthenticationFailureHandler()))
                 .build();
     }
 
@@ -53,6 +59,13 @@ public class Oauth2LoginSecurityConfiguration {
             Assert.notNull(platform, "platform can not be null");
 
             AuthInformation information = AuthInformationFactory.valueOf(platform.toUpperCase()).create(auth2User);
+
+            Optional<User> user = userService.findByPlatformAndEmail(information.platform(), information.email());
+            if (user.isEmpty()) {
+                userService.create(information);
+            }
+
+            // TODO JWT 생성 후 헤더에 넣어 반환하는 로직 추가
 
             response.sendRedirect("/login?success=true");
         };
