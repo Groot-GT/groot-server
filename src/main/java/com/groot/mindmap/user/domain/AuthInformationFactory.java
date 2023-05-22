@@ -1,5 +1,8 @@
 package com.groot.mindmap.user.domain;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
 
@@ -48,4 +51,14 @@ public enum AuthInformationFactory {
     };
 
     public abstract AuthInformation create(OAuth2User auth2User);
+
+    public static AuthInformation of(Authentication authentication) {
+        OAuth2User auth2User = (DefaultOAuth2User) authentication.getPrincipal();
+
+        // Get the platform name
+        String platform = ((OAuth2AuthenticationToken) authentication).getAuthorizedClientRegistrationId();
+        Assert.notNull(platform, "platform can not be null");
+
+        return AuthInformationFactory.valueOf(platform.toUpperCase()).create(auth2User);
+    }
 }
