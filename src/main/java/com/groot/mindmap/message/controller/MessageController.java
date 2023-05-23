@@ -7,20 +7,20 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
+@MessageMapping("/node")
 @Controller
 public class MessageController {
 
     private final MessageService messageService;
     private final RedisService redisService;
 
-    @MessageMapping("/node/add")
+    @MessageMapping("/add")
     public void nodeAdd(String message) {
         redisService.sendMessage(messageService.create(message));
     }
 
-    @MessageMapping("/node/delete")
+    @MessageMapping("/delete")
     public void nodeDelete(String message) {
         redisService.sendMessage(messageService.delete(message));
     }
-
 }

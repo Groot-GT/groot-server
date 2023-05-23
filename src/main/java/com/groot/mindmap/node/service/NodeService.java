@@ -26,14 +26,20 @@ public class NodeService {
                 .content(nodeRequest.content())
                 .color(nodeRequest.color())
                 .parentId(nodeRequest.parentId())
+                .children(nodeRequest.children())
                 .build();
-        return nodeRepository.save(node).getId();
+
+        Node child = nodeRepository.save(node);
+        // TODO 부모의 자식 노드리스트에 자식 추가
+//        Node parent = findNodeObject(nodeRequest.parentId());
+//        parent.getChildren().add(child.getId());
+        return child.getId();
     }
 
     @Transactional(readOnly = true)
     public NodeResponse detail(final Long id) {
         final Node node = findNodeObject(id);
-        return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId());
+        return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId(), node.getChildren());
     }
 
     @Transactional(readOnly = true)
@@ -51,6 +57,7 @@ public class NodeService {
                 .content(nodeRequest.content())
                 .color(nodeRequest.color())
                 .parentId(nodeRequest.parentId())
+                .children(nodeRequest.children())
                 .build();
         nodeRepository.save(node);
     }
@@ -61,6 +68,7 @@ public class NodeService {
 
     @Transactional
     public void delete(final Long id) {
+        // TODO 부모노드를 삭제할 때 자식 노드들도 한꺼번에 삭제하는 로직 추가
         findNodeObject(id);
         nodeRepository.deleteById(id);
     }

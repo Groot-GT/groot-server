@@ -3,17 +3,17 @@ package com.groot.mindmap.util;
 import com.groot.mindmap.message.domain.UserListMessage;
 import com.groot.mindmap.message.repository.RedisRepository;
 import com.groot.mindmap.message.service.RedisService;
+import com.groot.mindmap.user.domain.AuthInformationFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -35,10 +35,11 @@ public class StompHandler implements ChannelInterceptor {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 String destination = Objects.requireNonNull(message.getHeaders().get("simpDestination")).toString();
                 Long pageId = getPageId(destination);
+                String name = getName(message);
 
                 // 유저의 접속 정보를 저장하고 현재 접속 중인 유저 리스트에 새로운 유저를 추가
                 repository.setEnterInfo(sessionId, pageId);
-                repository.addUser(pageId, "NO_NAME");
+                repository.addUser(pageId, name);
 
                 // 현재 접속 중인 유저 목록에 대한 메세지를 pub
                 List<String> users = repository.getUsers(pageId);
@@ -48,9 +49,7 @@ public class StompHandler implements ChannelInterceptor {
             case DISCONNECT -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 Long pageId = repository.getEnteredPageId(sessionId);
-                String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser"))
-                        .map(Principal::getName)
-                        .orElse("NO_NAME");
+                String name = getName(message);
 
                 // 유저의 접속 정보를 삭제하고 현재 접속 중인 유저 리스트에서 유저를 제거
                 repository.removeUser(pageId, name);
@@ -62,6 +61,16 @@ public class StompHandler implements ChannelInterceptor {
             }
         }
         return message;
+    }
+
+    /**
+     * message 에서 사용자의 이름을 추출하는 메서드
+     * @param message 클라이언트로 부터 받은 메세지
+     * @return 유저의 이름
+     */
+    private String getName(Message<?> message) {
+        Authentication authentication = (Authentication) Objects.requireNonNull(message.getHeaders().get("simpUser"));
+        return AuthInformationFactory.of(authentication).name();
     }
 
     /**
