@@ -37,6 +37,9 @@ public class WebSecurityConfiguration {
     @Value("${login.failure.redirect-uri}")
     private String failureUrl;
 
+    @Value("${allowed.origin.url}")
+    private String allowedOrigin;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -67,7 +70,7 @@ public class WebSecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin(allowedOrigin);
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
