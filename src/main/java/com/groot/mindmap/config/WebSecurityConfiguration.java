@@ -5,6 +5,7 @@ import com.groot.mindmap.user.domain.AuthInformationFactory;
 import com.groot.mindmap.user.domain.User;
 import com.groot.mindmap.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +30,12 @@ import java.util.Optional;
 public class WebSecurityConfiguration {
 
     private final UserService userService;
+
+    @Value("${login.success.redirect-uri}")
+    private String successUrl;
+
+    @Value("${login.failure.redirect-uri}")
+    private String failureUrl;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -84,13 +91,13 @@ public class WebSecurityConfiguration {
 
             // TODO JWT 생성 후 헤더에 넣어 반환하는 로직 추가
 
-            response.sendRedirect("http://localhost:5173");
+            response.sendRedirect(successUrl);
         };
     }
 
     private AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
         return (request, response, exception) -> {
-            response.sendRedirect("/login");
+            response.sendRedirect(failureUrl);
         };
     }
 }
