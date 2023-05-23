@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-public class Oauth2LoginSecurityConfiguration {
+public class WebSecurityConfiguration {
 
     private final UserService userService;
 
@@ -90,7 +90,7 @@ public class Oauth2LoginSecurityConfiguration {
 
     private AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
         return (request, response, exception) -> {
-            response.sendRedirect("/login?error=true");
+            response.sendRedirect("/login");
         };
     }
 }
