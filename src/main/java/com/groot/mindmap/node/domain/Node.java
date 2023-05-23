@@ -1,16 +1,17 @@
 package com.groot.mindmap.node.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Node {
 
@@ -21,12 +22,6 @@ public class Node {
     private String content;
     private String color;
     private Long parentId;
-
-    public Node(final Long id, final String title, final String content, final String color, final Long parentId) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.color = color;
-        this.parentId = parentId;
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> children;
 }

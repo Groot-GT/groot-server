@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @RequiredArgsConstructor
 @Service
 public class MessageService {
@@ -24,7 +26,7 @@ public class MessageService {
         // TODO 임의로 NodeRequest 를 생성하고, Pub 할 메세지를 생성해 반환
         try {
             AddMessage addMessage = mapper.readValue(message, AddMessage.class);
-            NodeRequest request = new NodeRequest("제목 없음", "내용 없음", "black", addMessage.parentId());
+            NodeRequest request = new NodeRequest("제목 없음", "내용 없음", "black", addMessage.parentId(), new ArrayList<>());
             nodeService.create(request);
             return new NodeListMessage(addMessage, nodeService.list());
         } catch (JsonProcessingException e) {

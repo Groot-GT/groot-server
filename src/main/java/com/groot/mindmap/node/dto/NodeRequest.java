@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public record NodeRequest(
         @NotBlank(message = "제목을 입력해주세요.")
         @Size(max = 30, message = "제목은 30 글자를 넘을 수 없습니다.")
@@ -13,5 +15,8 @@ public record NodeRequest(
         @NotBlank(message = "color를 입력해주세요.")
         String color,
         @NotNull(message = "부모 node를 선택해주세요.")
-        Long parentId) {
+        Long parentId,
+        @NotNull(message = "자식 node는 null일 수 없습니다.")
+        List<Long> children)
+{
 }
