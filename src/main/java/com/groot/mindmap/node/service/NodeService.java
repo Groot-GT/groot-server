@@ -72,6 +72,11 @@ public class NodeService {
     @Transactional
     public void delete(final Long id) {
         Node parent = findNodeObject(id);
+
+        if (parent.getParentId() == null) {
+            throw new IllegalArgumentException("루트 노드는 삭제할 수 없습니다.");
+        }
+
         for (Long childId : parent.getChildren()) {
             delete(childId);
         }
