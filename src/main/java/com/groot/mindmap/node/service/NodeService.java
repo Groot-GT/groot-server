@@ -4,24 +4,27 @@ import com.groot.mindmap.node.domain.Node;
 import com.groot.mindmap.node.dto.NodeRequest;
 import com.groot.mindmap.node.dto.NodeResponse;
 import com.groot.mindmap.node.repository.NodeRepository;
+import com.groot.mindmap.page.domain.Page;
+import com.groot.mindmap.page.service.PageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@RequiredArgsConstructor
 @Service
 public class NodeService {
 
-    private final NodeRepository nodeRepository;
-
-    public NodeService(final NodeRepository nodeRepository) {
-        this.nodeRepository = nodeRepository;
-    }
+    private final NodeRepository repository;
+    private final PageService pageService;
 
     @Transactional
-    public Long create(final NodeRequest nodeRequest) {
-        final Node node = Node.builder()
+    public void create(final NodeRequest nodeRequest, final Long pageId) {
+        Page page = pageService.findById(pageId);
+        Node parent = findNodeObject(nodeRequest.parentId());
+        Node node = Node.builder()
                 .title(nodeRequest.title())
                 .content(nodeRequest.content())
                 .color(nodeRequest.color())
@@ -29,11 +32,9 @@ public class NodeService {
                 .children(nodeRequest.children())
                 .build();
 
-        Node child = nodeRepository.save(node);
-        // TODO 부모의 자식 노드리스트에 자식 추가
-//        Node parent = findNodeObject(nodeRequest.parentId());
-//        parent.getChildren().add(child.getId());
-        return child.getId();
+        node.setPage(page);
+        page.addNode(node);
+        parent.getChildren().add(repository.save(node).getId());
     }
 
     @Transactional(readOnly = true)
@@ -43,9 +44,11 @@ public class NodeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Node> list() {
-        // TODO pageID 를 통해 리스트를 받도록 변경
-        return nodeRepository.findAll();
+    public List<NodeResponse> list(final Long pageId) {
+        Page page = pageService.findById(pageId);
+        return repository.findByPage(page).stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
     @Transactional
@@ -59,17 +62,21 @@ public class NodeService {
                 .parentId(nodeRequest.parentId())
                 .children(nodeRequest.children())
                 .build();
-        nodeRepository.save(node);
+        repository.save(node);
     }
 
     private Node findNodeObject(final Long id) {
-        return nodeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
+        return repository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 Node가 없습니다."));
     }
 
     @Transactional
     public void delete(final Long id) {
         // TODO 부모노드를 삭제할 때 자식 노드들도 한꺼번에 삭제하는 로직 추가
         findNodeObject(id);
-        nodeRepository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    private NodeResponse mapToDto(Node node) {
+        return new NodeResponse(node.getId(), node.getTitle(), node.getContent(), node.getColor(), node.getParentId(), node.getChildren());
     }
 }
