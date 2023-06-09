@@ -71,9 +71,11 @@ public class NodeService {
 
     @Transactional
     public void delete(final Long id) {
-        // TODO 부모노드를 삭제할 때 자식 노드들도 한꺼번에 삭제하는 로직 추가
-        findNodeObject(id);
-        repository.deleteById(id);
+        Node parent = findNodeObject(id);
+        for (Long childId : parent.getChildren()) {
+            delete(childId);
+        }
+        repository.delete(parent);
     }
 
     private NodeResponse mapToDto(Node node) {
