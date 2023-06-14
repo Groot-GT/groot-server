@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -44,11 +46,11 @@ public class NodeService {
     }
 
     @Transactional(readOnly = true)
-    public List<NodeResponse> list(final Long pageId) {
+    public Map<Long, NodeResponse> list(final Long pageId) {
         Page page = pageService.findById(pageId);
         return repository.findByPage(page).stream()
                 .map(this::mapToDto)
-                .toList();
+                .collect(Collectors.toMap(NodeResponse::id, Function.identity()));
     }
 
     @Transactional
