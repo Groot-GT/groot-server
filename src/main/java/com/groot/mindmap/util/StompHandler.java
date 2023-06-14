@@ -35,8 +35,8 @@ public class StompHandler implements ChannelInterceptor {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 String destination = Objects.requireNonNull(message.getHeaders().get("simpDestination")).toString();
                 Long pageId = getPageId(destination);
-                String name = getName(message);
-
+//                String name = getName(message);
+                String name = "NO_NAME";
                 // 유저의 접속 정보를 저장하고 현재 접속 중인 유저 리스트에 새로운 유저를 추가
                 repository.setEnterInfo(sessionId, pageId);
                 repository.addUser(pageId, name);
@@ -49,7 +49,8 @@ public class StompHandler implements ChannelInterceptor {
             case DISCONNECT -> {
                 String sessionId = Objects.requireNonNull(message.getHeaders().get("simpSessionId")).toString();
                 Long pageId = repository.getEnteredPageId(sessionId);
-                String name = getName(message);
+//                String name = getName(message);
+                String name = "NO_NAME";
 
                 // 유저의 접속 정보를 삭제하고 현재 접속 중인 유저 리스트에서 유저를 제거
                 repository.removeUser(pageId, name);
