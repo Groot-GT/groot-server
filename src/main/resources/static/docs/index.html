@@ -505,7 +505,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/pages HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-X-CSRF-TOKEN: tWPHs4MTSA9YrQYM8HxQHDxkJMv8ho3gY13lxJOcnn29UgAkgwXwh-Byejx1yGI5k1FkJAwGCarM47zNW2jSp_X--kjYYzUS
+X-CSRF-TOKEN: _J3tSMgCrzJ6UluHLUTVdq31WTFr3aRk2umqii3nsLKcRifVxKqMKvAxmQJXMTq1GGnhQ8vHdAhSuMdJ7I3M7kjUiYqqJBLk
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -550,7 +550,7 @@ Expires: 0</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/nodes/1 HTTP/1.1
 Accept: application/json
-X-CSRF-TOKEN: WRSR4iPCerltl6n2yrHvU8vIrazCD-rR1MWry3hIzim0XsjMYCyphhH0G9hA8s3C-pzbN_yugJTzN4z84qOTrxt7rRCNO_z_
+X-CSRF-TOKEN: zAeeCt3SLjMjjisE3GgkUJhU4xXUXP6NrsxGc2IAKIR70oLy_TKrbO3kGwcOvh4zvkUQMf1kzi3lbsegy64gEFQxHuYY4bHG
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -649,7 +649,7 @@ Content-Length: 135
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/nodes/list/1 HTTP/1.1
 Accept: application/json
-X-CSRF-TOKEN: brzuBKookLxnpXc-R1sN8SKh68AiOkLanCw4QigzYKjhd38mDI_dMcwdod1KlEJacnY5x0DDxqETCSH3rU8BIRwKVZ-HREkV
+X-CSRF-TOKEN: jjTyPaKK4dS8lmGo-qaB4r3_Sf3-f1kpQfjzwuyEZ4VDy0Gzt1bHXsS9hOOR9FCYzYu12ovOZMSYTz0EcZ6R9o_mA-RxryCF
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -674,32 +674,72 @@ Host: localhost:8080</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node 제목</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.content</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node 내용</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].color</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Node 색깔</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].parentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.parentId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">부모 Node ID</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].children</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1.children</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">자식 Node 목록</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.color</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node 색깔</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.parentId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">부모 Node ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>2.children</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">자식 Node 목록</p></td>
 </tr>
@@ -719,23 +759,26 @@ X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 277
+Content-Length: 321
 
-[ {
-  "id" : 1,
-  "title" : "노드1",
-  "content" : "노드1입니다.",
-  "color" : "#FFFFFF",
-  "parentId" : null,
-  "children" : [ 2 ]
-}, {
-  "id" : 2,
-  "title" : "노드2",
-  "content" : "노드2입니다.",
-  "color" : "#000000",
-  "parentId" : 1,
-  "children" : [ ]
-} ]</code></pre>
+{
+  "2" : {
+    "id" : 2,
+    "title" : "노드2",
+    "content" : "노드2입니다.",
+    "color" : "#000000",
+    "parentId" : 1,
+    "children" : [ ]
+  },
+  "1" : {
+    "id" : 1,
+    "title" : "노드1",
+    "content" : "노드1입니다.",
+    "color" : "#FFFFFF",
+    "parentId" : null,
+    "children" : [ 2 ]
+  }
+}</code></pre>
 </div>
 </div>
 <hr>
@@ -800,7 +843,7 @@ Content-Length: 277
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/nodes/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 123
-X-CSRF-TOKEN: tGC2TYZ6qtGbO58MOiflCOGsqGlxsflr0R4wuBw2ea838-0ghVPXfbZJz7K2Daw4DwrRadPNhQtEhs5G5C8IjylTTJhSkNVD
+X-CSRF-TOKEN: jAzwCVgtAc9knAv56PsX1_EyWlZI7M1ZhblVy5JZmRo9Bx0NtDSVOWwfMPdJ_miYi9Yj7sUDdzQuiKl0t9wx_KZu_y4KYX86
 Host: localhost:8080
 
 {
@@ -847,7 +890,7 @@ Expires: 0</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/nodes/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-X-CSRF-TOKEN: PVeQf7bJh6y5un3UgLRCzoYlIKMnQ6CjuZ4Faufexcu-P_IZCG-mGYHx4Z6U30vkt5l2_-USDZtCIZeOjfhhWt64_a6HDMJ6
+X-CSRF-TOKEN: X0JDOoghlvtyOf26rr_5Ps7rcKsY9nXcxS98OdD_3oqHN9qjb3NxAr8Z95lfXJ-NnJLNXKiOXZN9k0Tx8RgaDLPO77LhB-6a
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -879,7 +922,7 @@ Expires: 0</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-06-13 20:14:57 +0900
+Last updated 2023-06-14 16:16:39 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
