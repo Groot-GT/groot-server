@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Optional;
@@ -47,22 +45,23 @@ public class WebSecurityConfiguration {
                     .frameOptions().disable()
                     .contentTypeOptions().disable()
                 .and()
-                .oauth2Login(oauth2 -> oauth2
-                        .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/oauth2/authorization")
-                                .authorizationRequestRepository(authorizationRequestRepository()))
-                        .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/*/oauth2/code/*"))
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(new DefaultOAuth2UserService()))
-                        .successHandler(oAuth2AuthenticationSuccessHandler())
-                        .failureHandler(oAuth2AuthenticationFailureHandler()))
+//                .oauth2Login(oauth2 -> oauth2
+//                        .authorizationEndpoint(authorization -> authorization
+//                                .baseUri("/oauth2/authorization")
+//                                .authorizationRequestRepository(authorizationRequestRepository()))
+//                        .redirectionEndpoint(redirection -> redirection
+//                                .baseUri("/*/oauth2/code/*"))
+//                        .userInfoEndpoint(userInfo -> userInfo
+//                                .userService(new DefaultOAuth2UserService()))
+//                        .successHandler(oAuth2AuthenticationSuccessHandler())
+//                        .failureHandler(oAuth2AuthenticationFailureHandler()))
                 .authorizeHttpRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                    .anyRequest().authenticated()
+//                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                    .anyRequest().permitAll()
                 .and()
                 .cors()
                 .and()
+                .csrf().disable()
                 .build();
     }
 
