@@ -59,19 +59,8 @@ asciidoctor.doFirst {
 	delete file('src/main/resources/static/docs')
 }
 
-tasks.register('copyDocument', Copy) {
-	dependsOn asciidoctor
-
-	from file("build/docs/asciidoc")
-	into file("src/main/resources/static/docs")
-}
-
-build {
-	dependsOn copyDocument
-}
-
 bootJar {
-	dependsOn copyDocument
+	dependsOn asciidoctor
 	from ("${asciidoctor.outputDir}/html5") {
 		into 'static/docs'
 	}
